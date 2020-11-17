@@ -1,0 +1,126 @@
+
+
+<!DOCTYPE html>
+
+<html>
+
+<head style="position:fixed;top:0;width:100%;height:4vh;">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js" integrity="sha512-M+hXwltZ3+0nFQJiVke7pqXY7VdtWW2jVG31zrml+eteTP7im25FdwtLhIBTWkaHRQyPrhO2uy8glLMHZzhFog==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="styles.css" >
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+    <title>Covid Care</title>
+
+</head>
+
+
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-dark  sticky-top" style="background-color:black">
+    <a class="navbar-brand" href="#" style="color: #c7b9b9"><i class="fas fa-hand-holding-medical"></i> COVID CARE</a>
+    <ul class="navbar-nav ml-auto" >
+        <li class="nav-item">
+            <a class="nav-link active" href="Ps_Project.html"><i class="fas fa-house-user"></i> Home </a>
+        </li>
+              <li class="nav-item">
+            <a class="nav-link" href="covid-tracker.html"><i class="fas fa-virus "></i> Covid Tracker</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="confirmed-recovered.html"><i class="fas fa-virus "></i> Daily Cases vs Daily Recovered</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="state-cases.html"><i class="fas fa-virus "></i>State vs Daily Cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="delhiTempCovid.html"><i class="fas fa-virus "></i>Temperature of delhi v/s covid cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="mumbaiTempCovid"><i class="fas fa-virus "></i>Temperature of mumbai v/s covid cases</a>
+        </li>
+    </ul>
+</nav>
+<div style="background-image: url(https://bit.ly/3eWCWOB); background-size: cover; opacity: 0.9">
+    <div  id="home" class="container main-info-section">
+        <div class="col-md-6">
+            <div class="text">
+                <h1>
+                    <span class="fadeInDown"> H </span>
+                    <span class="m-left fadeInDown"> i</span>
+                    <span class="m-left fadeInDown"> ,</span>
+                    <br>
+                    <span class="fadeInDown"> I</span>
+                    <span class="m-left fadeInDown">'</span>
+                    <span class="m-left fadeInDown">m</span>
+                    <span class="name fadeInDown">Y</span>
+                    <span class="name fadeInDown m-left">o</span>
+                    <span class="name fadeInDown m-left">u</span>
+                    <span class="name fadeInDown m-left">r</span>
+                    <br>
+                    <span class="fadeInDown">O</span>
+                    <span class="m-left fadeInDown">w</span>
+                    <span class="m-left fadeInDown">n</span>
+                    <span class="fadeInDown">C</span>
+                    <span class="m-left fadeInDown">o</span>
+                    <span class="m-left fadeInDown">v</span>
+                    <span class="m-left fadeInDown">i</span>
+                    <span class="m-left fadeInDown">d</span>
+                    <span class="fadeInDown">T</span>
+                    <span class="m-left fadeInDown">r</span>
+                    <span class="m-left fadeInDown">a</span>
+                    <span class="m-left fadeInDown">c</span>
+                    <span class="m-left fadeInDown">k</span>
+                    <span class="m-left fadeInDown">e</span>
+                    <span class="m-left fadeInDown">r</span>
+                </h1>
+                <p > <b>Covid to climate | tracker</b></p>
+                <a href="covid-tracker.html">Analyse</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class=" profile-image">
+                <img class="rounded-circle" style="opacity: 0.8" alt="100x100" src="healthCare.jpg"
+                     data-holder-rendered="true" style="width: 440px; height:420px; background-color: black; background-size: stretch">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<footer><p style="text-align:center;background-color:black;color:white;">© Covid Care</p></footer>
+</body>
+
+</html>

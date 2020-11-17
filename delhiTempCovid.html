@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head style="position:fixed;top:0;width:100%;height:4vh;">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js" integrity="sha512-M+hXwltZ3+0nFQJiVke7pqXY7VdtWW2jVG31zrml+eteTP7im25FdwtLhIBTWkaHRQyPrhO2uy8glLMHZzhFog==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="styles.css" >
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+    <title>State VS Daily cases</title>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-dark  sticky-top" style="background-color:black">
+    <a class="navbar-brand" href="#" style="color: #c7b9b9"><i class="fas fa-hand-holding-medical"></i> COVID CARE</a>
+    <ul class="navbar-nav ml-auto" >
+        <li class="nav-item">
+            <a class="nav-link" href="Ps_Project.html"><i class="fas fa-house-user"></i> Home </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="covid-tracker.html"><i class="fas fa-virus "></i> Covid Tracker</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="confirmed-recovered.html"><i class="fas fa-virus "></i> Daily Cases vs Daily Recovered</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="state-cases.html"><i class="fas fa-virus "></i>State vs Daily Cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="delhiTempCovid.html"><i class="fas fa-virus "></i>Temperature of delhi v/s covid cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="mumbaiTempCovid.html"><i class="fas fa-virus "></i>Temperature of mumbai v/s covid cases</a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid" style=" background-color:#f8bd7f; color: #87431d" >
+    <div class="row" style="display:block">
+        <h1 style="text-align: center; padding-top:10px">Temperature of delhi v/s covid cases</h1>
+        <h6 id='answer3' style="text-align: center; padding-top:10px;padding-bottom:10px;"></h6>
+    </div>
+</div>
+
+<div id = "covid2">
+    <script>
+	//const fetch = require("node-fetch");
+ function pearsonCorrelation(prefs, p1, p2) {
+
+    var si = [];
+    for (var key in prefs[p1]) {
+      if (prefs[p2][key]) si.push(key);
+    }
+
+    var n = si.length;
+    if (n==0) return 0;
+
+    var sum1 = 0;
+    for (var i=0;i<si.length;i++) sum1 += parseInt(prefs[p1][si[i]]);
+    var sum2 = 0;
+    for (var i=0;i<si.length;i++) sum2 += parseInt(prefs[p2][si[i]]);
+
+    var sum1Sq = 0;
+    for (var i=0; i<si.length;i++) {
+      sum1Sq += Math.pow(prefs[p1][si[i]],2);
+
+    }
+
+    var sum2Sq = 0;
+    for (var i=0;i<si.length;i++) {
+      sum2Sq += Math.pow(prefs[p2][si[i]],2);
+    }
+
+    var pSum = 0;
+    for (var i = 0; i < si.length; i++) {
+      pSum += prefs[p1][si[i]] * prefs[p2][si[i]];
+    }
+
+    var num = pSum - (sum1 * sum2 / n);
+    var den = Math.sqrt((sum1Sq - Math.pow(sum1, 2) / n)*(sum2Sq - Math.pow(sum2, 2) / n));
+
+    if(den==0) return 0;
+
+    return num / den;
+}
+
+var stateData=[];
+var dailyData = [];
+
+var states = [];
+var DataDelhi = {
+    "1/5/2020" : 31.6,
+    "2/5/2020" : 29,
+    "3/5/2020" : 28.4,
+    "4/5/2020" : 28,
+    "5/5/2020" : 30.8,
+    "6/5/2020" : 29.8,
+    "7/5/2020" : 30.2,
+    "8/5/2020" : 32.2,
+    "9/5/2020" : 33.2,
+    "10/5/2020" : 28.5,
+    "11/5/2020" : 28.9,
+    "12/5/2020" : 31.2,
+    "05/13/2020" : 30.6,
+    "05/14/2020" : 30.6,
+    "05/15/2020" : 32.1,
+    "05/16/2020" : 32.5,
+    "05/17/2020" : 32.4,
+    "05/18/2020" : 32.8,
+    "05/19/2020" : 33.6,
+    "05/20/2020" : 33.1,
+    "05/21/2020" : 34.8,
+    "05/22/2020" : 35.6,
+    "05/23/2020" : 37.1,
+    "05/24/2020" : 38.2,
+    "05/25/2020" : 37.1,
+    "05/26/2020" : 38.1,
+    "05/27/2020" : 37.9,
+    "05/28/2020" : 33.4,
+    "05/29/2020" : 29.2,
+    "05/30/2020" : 28.5,
+    "05/31/2020" : 25.4,
+    "1/6/2020" : 28.7,
+    "2/6/2020" : 31,
+    "3/6/2020" : 31.3,
+    "4/6/2020" : 29.2,
+    "5/6/2020" : 29.1,
+    "6/6/2020" : 30.3,
+    "7/6/2020" : 29.4,
+    "8/6/2020" : 31.9,
+    "9/6/2020" : 34.7,
+    "10/6/2020" : 34.7,
+    "11/6/2020" : 34.6,
+    "12/6/2020" : 35.7,
+    "06/13/2020" : 32.9,
+    "06/14/2020" : 34.3,
+    "06/15/2020" : 36.1,
+    "06/16/2020" : 35.8,
+    "06/17/2020" : 35.4,
+    "06/18/2020" : 36.1,
+    "06/19/2020" : 36,
+    "06/20/2020" : 31.9,
+    "06/21/2020" : 31.5,
+    "06/22/2020" : 32,
+    "06/23/2020" : 32.7,
+    "06/24/2020" : 30.9,
+    "06/25/2020" : 31.5,
+    "06/26/2020" : 32.3,
+    "06/27/2020" : 34,
+    "06/28/2020" : 36.2,
+    "06/29/2020" : 35.1,
+    "06/30/2020" : 32.2,
+    "1/7/2020" : 33.9,
+    "2/7/2020" : 35.5,
+    "3/7/2020" : 35.2,
+    "4/7/2020" : 33.6,
+    "5/7/2020" : 29.3,
+    "6/7/2020" : 30.9,
+    "7/7/2020" : 30.1,
+    "8/7/2020" : 30.1,
+    "9/7/2020" : 32.3,
+    "10/7/2020" : 33.7,
+    "11/7/2020" : 31.3,
+    "12/7/2020" : 30.7,
+    "07/13/2020" : 32.1,
+    "07/14/2020" : 33.5,
+    "07/15/2020" : 32.8,
+    "07/16/2020" : 32,
+    "07/17/2020" : 31.9,
+    "07/18/2020" : 32.1,
+    "07/19/2020" : 30.4,
+    "07/20/2020" : 28.4,
+    "07/21/2020" : 26.7,
+    "07/22/2020" : 26.3,
+    "07/23/2020" : 29.2,
+    "07/24/2020" : 30.1,
+    "07/25/2020" : 30.3,
+    "07/26/2020" : 31.6,
+    "07/27/2020" : 32.8,
+    "07/28/2020" : 33.2,
+    "07/29/2020" : 30.2,
+    "07/30/2020" : 28.7,
+    "07/31/2020" : 30.5,
+    "1/8/2020" : 30.2,
+    "2/8/2020" : 32.5,
+    "3/8/2020" : 33.1,
+    "4/8/2020" : 32.8,
+    "5/8/2020" : 31,
+    "6/8/2020" : 32.7,
+    "7/8/2020" : 31.9,
+    "8/8/2020" : 32.7,
+    "9/8/2020" : 30.1,
+    "10/8/2020" : 30.9,
+    "11/8/2020" : 30.9,
+    "12/8/2020" : 31.1,
+    "08/13/2020" : 27,
+    "08/14/2020" : 29,
+    "08/15/2020" : 30.6,
+    "08/16/2020" : 31.1,
+    "08/17/2020" : 30.1,
+    "08/18/2020" : 30,
+    "08/19/2020" : 27,
+    "08/20/2020" : 26.4,
+    "08/21/2020" : 29.4,
+    "08/22/2020" : 30.3,
+    "08/23/2020" : 29.3,
+    "08/24/2020" : 29.1,
+    "08/25/2020" : 29.2,
+    "08/26/2020" : 30,
+    "08/27/2020" : 30.8,
+    "08/28/2020" : 28.5,
+    "08/29/2020" : 29.9,
+    "08/30/2020" : 28.8,
+    "08/31/2020" : 29,
+    "1/9/2020" : 29.9,
+    "2/9/2020" : 30.2,
+    "3/9/2020" : 30.9,
+    "4/9/2020" : 30.6,
+    "5/9/2020" : 29.4,
+    "6/9/2020" : 29.2,
+    "7/9/2020" : 29.3,
+    "8/9/2020" : 30.1,
+    "9/9/2020" : 31,
+    "10/9/2020" : 30.9,
+    "11/9/2020" : 31.6,
+    "12/9/2020" : 31.8,
+    "09/13/2020" : 32,
+    "09/14/2020" : 31.7,
+    "09/15/2020" : 31.7,
+    "09/16/2020" : 32.5,
+    "09/17/2020" : 32.5,
+    "09/18/2020" : 32.9,
+    "09/19/2020" : 32.3,
+    "09/20/2020" : 32.2,
+    "09/21/2020" : 32.3,
+    "09/22/2020" : 31.9,
+    "09/23/2020" : 31.8,
+    "09/24/2020" : 30.5,
+    "09/25/2020" : 31.3,
+    "09/26/2020" : 29.4,
+    "09/27/2020" : 29.4,
+    "09/28/2020" : 30,
+    "09/29/2020" : 29.8,
+    "09/30/2020" : 29.1,
+    "1/10/2020" : 29.3,
+    "2/10/2020" : 29.1,
+    "3/10/2020" : 28.9,
+    "4/10/2020" : 27.4,
+    "5/10/2020" : 27.7,
+    "6/10/2020" : 28,
+    "7/10/2020" : 28.1,
+    "8/10/2020" : 28,
+    "9/10/2020" : 27.7,
+    "10/10/2020" : 28.1,
+    "11/10/2020" : 27.6,
+    "12/10/2020" : 27.1,
+    "10/13/2020" : 27.7,
+    "10/14/2020" : 28.9,
+    "10/15/2020" : 28,
+    "10/16/2020" : 26.5,
+    "10/17/2020" : 25.5,
+    "10/18/2020" : 26.1,
+    "10/19/2020" : 25.6,
+    "10/20/2020" : 24.6,
+    "10/21/2020" : 25,
+    "10/22/2020" : 25.1,
+    "10/23/2020" : 24.5,
+    "10/24/2020" : 24,
+    "10/25/2020" : 23.7,
+    "10/26/2020" : 23.9,
+    "10/27/2020" : 23.3,
+    "10/28/2020" : 22.3,
+    "10/29/2020" : 21.7,
+    "10/30/2020" : 22.3,
+    "10/31/2020" : 22.2,
+    "1/11/2020" : 21.3,
+    "2/11/2020" : 20.1,
+    "3/11/2020" : 20.1,
+    "4/11/2020" : 19.6,
+    "5/11/2020" : 20.4,
+    "6/11/2020" : 19.9,
+    "7/11/2020" : 20.5,
+    "8/11/2020" : 19.6,
+    "9/11/2020" : 18.8,
+    "10/11/2020" : 18.8,
+    "11/11/2020" : 18.7,
+};
+
+
+var tempDataDelhi = Object.values(DataDelhi);
+var dailycasesTemp = [];
+var start = 0;
+
+async function fetchData(){
+    await fetch("https://api.covid19india.org/data.json")
+    .then(res=> res.json())
+    .then(data => {
+    data.statewise.forEach(function(state){
+      if(state.state != "Total"){
+        stateData.push(state);
+      }
+    });
+    data.cases_time_series.forEach(function(EvrydayCase){
+        dailyData.push(EvrydayCase);
+    });
+    dailyData.forEach(function(state){
+        if(state.date == "01 May "){
+            start = 1
+        }
+        if(start){
+            dailycasesTemp.push(state.dailyconfirmed)
+        }
+    })
+    })
+}
+
+function graphPlot(){
+
+
+var trace2 = {
+  x : dailycasesTemp,
+  y : tempDataDelhi,
+  mode: 'markers',
+   marker: {
+    size: 10,
+    color:'rgb(117, 7, 47)',
+		opacity: 0.6
+  }
+};
+
+
+var data1 = [trace2];
+var layout = {
+
+  xaxis: {
+    type: "linear",
+    range: [
+      0,
+      6000000],
+    autorange: true
+  },
+  yaxis: {
+    type: "linear",
+    range: [4,6189271],
+    autorange: true
+  },
+  height: 648,
+  width: 1580,
+  autosize: true,
+  showlegend: false,
+  paper_bgcolor: 'rgb(254, 247, 234)',
+  plot_bgcolor: 'rgb(254, 247, 234)'
+};
+
+Plotly.newPlot('covid2', data1,layout);
+
+}
+
+async function calling(){
+    await fetchData()
+
+    z3 = [tempDataDelhi,dailycasesTemp]
+
+
+    const pearCorr3 = pearsonCorrelation(z3,0,1);
+
+    if(!isNaN(pearCorr3))
+    {
+        document.getElementById("answer3").innerHTML=" The test yield a value :"+pearCorr3;
+    }
+ 
+    console.log(pearCorr3);
+    graphPlot()
+
+}
+
+calling()
+
+</script></div>
+<footer><p style="text-align:center;background-color:black;color:white;">© Covid Care</p></footer>
+
+
+</body>
+</html>

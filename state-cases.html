@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+        <html lang="en">
+        <head style="position:fixed;top:0;width:100%;height:4vh;">
+
+            <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+
+
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js" integrity="sha512-M+hXwltZ3+0nFQJiVke7pqXY7VdtWW2jVG31zrml+eteTP7im25FdwtLhIBTWkaHRQyPrhO2uy8glLMHZzhFog==" crossorigin="anonymous"></script>
+
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+
+            <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+                  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+                  crossorigin=""/>
+
+            <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+                    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+                    crossorigin=""></script>
+
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+            <link rel="stylesheet" href="styles.css" >
+
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+            <!-- Load plotly.js into the DOM -->
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+            <title>State VS Daily cases</title>
+
+        </head>
+
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-dark  sticky-top" style="background-color:black">
+    <a class="navbar-brand" href="#" style="color: #c7b9b9"><i class="fas fa-hand-holding-medical"></i> COVID CARE</a>
+    <ul class="navbar-nav ml-auto" >
+        <li class="nav-item">
+            <a class="nav-link" href="Ps_Project.html"><i class="fas fa-house-user"></i> Home </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="covid-tracker.html"><i class="fas fa-virus "></i> Covid Tracker</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="confirmed-recovered.html"><i class="fas fa-virus "></i> Daily Cases vs Daily Recovered</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link  active" href="state-cases.html"><i class="fas fa-virus "></i>State vs Daily Cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="delhiTempCovid.html"><i class="fas fa-virus "></i>Temperature of delhi v/s covid cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="mumbaiTempCovid.html"><i class="fas fa-virus "></i>Temperature of mumbai v/s covid cases</a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid" style=" background-color:#f8bd7f; color: #87431d" >
+    <div class="row" style="display:block">
+        <h1 style="text-align: center; padding-top:10px">State population VS Active cases</h1>
+        <h6 id='answer2' style="text-align: center; padding-top:10px;padding-bottom:10px"></h6>
+    </div>
+</div>
+
+<div id = "covid2">
+    <script>
+	//const fetch = require("node-fetch");
+ function pearsonCorrelation(prefs, p1, p2) {
+
+    var si = [];
+    for (var key in prefs[p1]) {
+      if (prefs[p2][key]) si.push(key);
+    }
+
+    var n = si.length;
+    if (n==0) return 0;
+
+    var sum1 = 0;
+    for (var i=0;i<si.length;i++) sum1 += parseInt(prefs[p1][si[i]]);
+    var sum2 = 0;
+    for (var i=0;i<si.length;i++) sum2 += parseInt(prefs[p2][si[i]]);
+
+    var sum1Sq = 0;
+    for (var i=0; i<si.length;i++) {
+      sum1Sq += Math.pow(prefs[p1][si[i]],2);
+
+    }
+
+    var sum2Sq = 0;
+    for (var i=0;i<si.length;i++) {
+      sum2Sq += Math.pow(prefs[p2][si[i]],2);
+    }
+
+    var pSum = 0;
+    for (var i = 0; i < si.length; i++) {
+      pSum += prefs[p1][si[i]] * prefs[p2][si[i]];
+    }
+
+    var num = pSum - (sum1 * sum2 / n);
+    var den = Math.sqrt((sum1Sq - Math.pow(sum1, 2) / n)*(sum2Sq - Math.pow(sum2, 2) / n));
+
+    if(den==0) return 0;
+
+    return num / den;
+}
+
+var stateData=[];
+var confirm=[];
+
+var statesPop = {
+    'Maharashtra' : 123144223,
+    'Karnataka' : 67562686,
+    'Andhra Pradesh' :53903393 ,
+    'Tamil Nadu' : 77841267,
+    'Uttar Pradesh' : 237882725,
+    'Kerala' : 35699443,
+    'Delhi' : 18710922,
+    'West Bengal' : 99609303,
+    'Odisha' :46356334 ,
+    'Telangana' : 39362732,
+    'Bihar' :124799926 ,
+    'Rajasthan' :81032689 ,
+    'Assam':35607039,
+    'Chhattisgarh' : 29436231,
+    'Haryana' : 28204692,
+    'Gujarat' : 63872399,
+    'Madhya Pradesh' : 85358965,
+    'Punjab' : 30141373,
+    'Jharkhand' :38593948 ,
+    'Jammu and Kashmir' :13606320 ,
+    'Uttarakhand' : 11250858,
+    'Goa' : 1586250,
+    'Puducherry' :1413542 ,
+    'Tripura' : 4169794,
+    'Himachal Pradesh' : 7451955,
+    'Manipur' :3091545 ,
+    'Arunachal Pradesh' : 1570458,
+    'Chandigarh' : 1158473,
+    'Meghalaya' : 3366710,
+    'Nagaland' : 2249695,
+    'Ladakh' : 289023,
+    'Andaman and Nicobar Islands' : 417036,
+    'Sikkim' :690251 ,
+    'Dadra and Nagar Haveli and Daman and Diu' : 615724,
+    'Mizoram' :1239244 ,
+    'State unassigned' : 0,
+    'Lakshadweep' : 73183,
+}
+var statePopVal = Object.values(statesPop);
+
+var dailycasesTemp = [];
+var start = 0;
+
+async function fetchData(){
+    await fetch("https://api.covid19india.org/data.json")
+    .then(res=> res.json())
+    .then(data => {
+    data.statewise.forEach(function(state){
+      if(state.state != "Total"){
+        stateData.push(state);
+      }
+    });
+    stateData.forEach(function(state){
+        confirm.push(state.confirmed);
+    });
+    })
+}
+
+function graphPlot(){
+
+var trace4 = {
+  x : confirm,
+  y : statePopVal,
+  mode: 'markers',
+  marker: {
+    size: 10,
+    color:'rgb(180,132,132)',
+		opacity: 0.6
+  }
+
+};
+
+var data6 = [trace4];
+var layout = {
+
+  xaxis: {
+    type: "linear",
+    range: [
+      0,
+      6000000],
+    autorange: true
+  },
+  yaxis: {
+    type: "linear",
+    range: [4,6189271],
+    autorange: true
+  },
+  height: 648,
+  width: 1580,
+  autosize: true,
+  showlegend: false,
+  paper_bgcolor: 'rgb(254, 247, 234)',
+  plot_bgcolor: 'rgb(254, 247, 234)'
+};
+var config={responsive:true}
+
+Plotly.newPlot('covid2', data6,layout,config);
+
+}
+
+async function calling(){
+    await fetchData()
+
+    z2 = [statePopVal,confirm];
+    const pearCorr2 = pearsonCorrelation(z2,0,1);
+
+if(!isNaN(pearCorr2))
+    {
+        document.getElementById("answer2").innerHTML="                       The test yield a value :"+pearCorr2;
+    }
+    console.log(pearCorr2);
+
+    graphPlot()
+
+}
+
+calling()
+
+</script></div>
+<footer><p style="text-align:center;background-color:black;color:white;">© Covid Care</p></footer>
+
+
+</body>
+</html>

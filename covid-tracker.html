@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head style="position:fixed;top:0;width:100%;height:4vh;">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js" integrity="sha512-M+hXwltZ3+0nFQJiVke7pqXY7VdtWW2jVG31zrml+eteTP7im25FdwtLhIBTWkaHRQyPrhO2uy8glLMHZzhFog==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="styles.css" >
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Covid Tracker</title>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-dark  sticky-top" style="background-color:black">
+    <a class="navbar-brand" href="#" style="color: #c7b9b9"><i class="fas fa-hand-holding-medical"></i> COVID CARE</a>
+    <ul class="navbar-nav ml-auto" >
+        <li class="nav-item">
+            <a class="nav-link" href="Ps_Project.html"><i class="fas fa-house-user"></i> Home </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link  active" href="covid-tracker.html"><i class="fas fa-virus "></i> Covid Tracker</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="confirmed-recovered.html"><i class="fas fa-virus "></i> Daily Cases vs Daily Recovered</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="state-cases.html"><i class="fas fa-virus "></i>State vs Daily Cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="delhiTempCovid.html"><i class="fas fa-virus "></i>Temperature of delhi v/s covid cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="mumbaiTempCovid"><i class="fas fa-virus "></i>Temperature of mumbai v/s covid cases</a>
+        </li>
+    </ul>
+</nav>
+
+    <div  style="background-color:#000000; padding-top: 10px;">
+        <h1 style="text-align: center; font-family:Franklin Gothic; color:white ">Covid Tracker</h1>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+        <canvas id="graph"  style="width:40%;height:40vh;"></canvas>
+
+        <script>
+   	 var stateData_=[];
+var confirm_=[];
+var active_=[];
+var deaths_=[];
+var recovered_=[];
+var states_=[];
+fetch("https://api.covid19india.org/data.json")
+.then(res=> res.json())
+.then(data => {
+ data.statewise.forEach(function(state){
+  //  if(state.state != "Total"){
+    stateData_.push(state);
+  //  }
+ })
+stateData_.forEach(function(state){
+  active_.push(state.active);
+});
+stateData_.forEach(function(state){
+  confirm_.push(state.confirmed);
+});
+stateData_.forEach(function(state){
+  deaths_.push(state.deaths);
+});
+stateData_.forEach(function(state){
+  states_.push(state.state);
+});
+stateData_.forEach(function(state){
+  recovered_.push(state.recovered);
+});
+// console.log(confirm);
+var graph= document.getElementById("graph").getContext("2d");
+var graph = new Chart(graph,{
+  type:"bar",
+  data:{
+    labels: states_,
+    datasets:[
+
+        {
+          label:"Active",
+          data: active_ ,
+          backgroundColor: "#c060a1",
+          barPercentage: 0.8,
+        barThickness: 9,
+         },
+         {
+          label:"Confirmed",
+         data: confirm_,
+         backgroundColor: "#990c7f",
+         barPercentage: 0.8,
+        barThickness: 9,
+
+         },
+         {
+          label:"Recovered",
+         data: recovered_,
+         backgroundColor: "#6a097d",
+         barPercentage: 0.8,
+        barThickness: 9,
+         },
+         {
+          label:"Deaths",
+         data: deaths_ ,
+         backgroundColor: "#e5c5b5",
+         barPercentage: 0.8,
+        barThickness: 9,
+         },
+
+    ],
+  },
+
+});
+});
+   </script>
+    </div>
+<footer><p style="text-align:center;background-color:black;color:white;">© Covid Care</p></footer>
+
+</body>
+</html>

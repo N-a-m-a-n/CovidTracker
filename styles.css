@@ -1,0 +1,206 @@
+/* Simple CSS3 Fade-in Animation */
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fadeIn {
+  opacity:0;
+  -webkit-animation:fadeIn ease-in 1;
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:0.8s;
+  -moz-animation-duration:0.8s;
+  animation-duration:0.8s;
+}
+
+.fadeIn.first {
+  -webkit-animation-delay: 0.25s;
+  -moz-animation-delay: 0.25s;
+  animation-delay: 0.25s;
+}
+
+.fadeIn.third {
+  -webkit-animation-delay: 0.35s;
+  -moz-animation-delay: 0.35s;
+  animation-delay: 0.35s;
+}
+
+/* Simple CSS3 Fade-in-down Animation */
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+  -webkit-animation-duration: 1.5s;
+  animation-duration: 1.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  box-shadow: grey;
+}
+
+@-webkit-keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+/*------*/
+
+html{
+	scroll-behavior: smooth;
+}
+
+*{
+	margin: 0;
+	padding:0;
+	box-sizing: border-box;
+}
+
+.container{
+	padding: 0 100px 0 100px;
+}
+
+
+.main-info-section{
+	display: flex;
+	flex-wrap: space-between;
+	justify-content: space-between;
+	height: calc(105vh - 81.6px);
+}
+
+
+li{
+	list-style: none;
+	margin-left: 30px;
+}
+
+nav{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding: 20px 0;
+}
+
+.nav-link{
+    font-size: 0.7rem;
+}
+
+a{
+	text-decoration: none;
+	font-size: 0.9rem;
+	text-transform: uppercase;
+
+}
+
+.text span{
+	color: black;
+	display: inline-block;
+}
+
+.text{
+	margin-top: 160px;
+}
+
+.text h1{ 
+	font-size: 3rem;
+	cursor: context-menu;
+font-weight: bold;
+}
+
+span:hover{
+	color: #ffb921;
+	transition: all .5s;
+}
+
+span.name {
+	color: #e62e2e;
+}
+span.name:hover{
+	color: #ffb921;
+}
+
+span.m-left{
+	margin-left: -14px;
+}
+
+.text p{
+	letter-spacing: 3px;
+	word-spacing: 10px;
+	font-size: 1rem;
+	color: #1d1e1f;
+}
+
+.text a{
+	padding: 12px 20px;
+	background-color: black;
+	color: white;
+	font-size: 1rem;
+	letter-spacing: 2px;
+
+	top: 80px;
+	overflow: hidden;
+	transition: .5s;
+	display: inline-block;
+} 
+
+.text a:hover{
+	background-color: white;
+	padding: 12px 20px;
+	color: black;
+	text-decoration: none;
+	transition: all .5s;
+	font-size: 1.1rem;
+}
+
+.text a:active{
+	text-decoration: none;
+}
+
+.text a:visited{
+	text-decoration: none;
+}
+
+text a:before{
+	content: '';
+	background-color: magenta;
+	position: absolute;
+	left: 0px;
+	top:0px;
+	width: 100%;
+	height:0%;
+	z-index: -1;
+	text-decoration: none;
+	transition: .5s;
+}
+
+text a:hover::before{
+	height: 100%;
+	text-decoration: none;
+}
+
+.profile-image img{
+	margin-top: 80px;
+}

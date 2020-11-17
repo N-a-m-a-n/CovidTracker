@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head style="position:fixed;top:0;width:100%;height:4vh;">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js" integrity="sha512-M+hXwltZ3+0nFQJiVke7pqXY7VdtWW2jVG31zrml+eteTP7im25FdwtLhIBTWkaHRQyPrhO2uy8glLMHZzhFog==" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="styles.css" >
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+    <title>State VS Daily cases</title>
+
+</head>
+
+<body >
+
+<nav class="navbar navbar-expand-sm navbar-dark  sticky-top" style="background-color:black">
+    <a class="navbar-brand" href="#" style="color: #c7b9b9"><i class="fas fa-hand-holding-medical"></i> COVID CARE</a>
+    <ul class="navbar-nav ml-auto" >
+        <li class="nav-item">
+            <a class="nav-link" href="Ps_Project.html"><i class="fas fa-house-user"></i> Home </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="covid-tracker.html"><i class="fas fa-virus "></i> Covid Tracker</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="confirmed-recovered.html"><i class="fas fa-virus "></i> Daily Cases vs Daily Recovered</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="state-cases.html"><i class="fas fa-virus "></i>State vs Daily Cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="delhiTempCovid.html"><i class="fas fa-virus "></i>Temperature of delhi v/s covid cases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="mumbaiTempCovid.html"><i class="fas fa-virus "></i>Temperature of mumbai v/s covid cases</a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid" style=" background-color:#f8bd7f; color: #87431d" >
+    <div class="row" style="display:block" >
+        <h1 style="text-align: center; padding-top:10px">Temperature of mumbai v/s covid cases</h1>
+        <h6 id='answer4' style="text-align: center; padding-top:10px;padding-bottom:10px;"></h6>
+    </div>
+</div>
+
+<div id = "covid2">
+    <script>
+	//const fetch = require("node-fetch");
+ function pearsonCorrelation(prefs, p1, p2) {
+
+    var si = [];
+    for (var key in prefs[p1]) {
+      if (prefs[p2][key]) si.push(key);
+    }
+
+    var n = si.length;
+    if (n==0) return 0;
+
+    var sum1 = 0;
+    for (var i=0;i<si.length;i++) sum1 += parseInt(prefs[p1][si[i]]);
+    var sum2 = 0;
+    for (var i=0;i<si.length;i++) sum2 += parseInt(prefs[p2][si[i]]);
+
+    var sum1Sq = 0;
+    for (var i=0; i<si.length;i++) {
+      sum1Sq += Math.pow(prefs[p1][si[i]],2);
+
+    }
+
+    var sum2Sq = 0;
+    for (var i=0;i<si.length;i++) {
+      sum2Sq += Math.pow(prefs[p2][si[i]],2);
+    }
+
+    var pSum = 0;
+    for (var i = 0; i < si.length; i++) {
+      pSum += prefs[p1][si[i]] * prefs[p2][si[i]];
+    }
+
+    var num = pSum - (sum1 * sum2 / n);
+    var den = Math.sqrt((sum1Sq - Math.pow(sum1, 2) / n)*(sum2Sq - Math.pow(sum2, 2) / n));
+
+    if(den==0) return 0;
+
+    return num / den;
+}
+
+var stateData=[];
+var dailyData = [];
+var dailyCases = [];
+var states = [];
+
+var tempDataMumbai = [30.9,30.6,30.8,30.5,30.8,31.2,30.7,30.6,30.7,30.9,31.1,30.6,30.7,31.2,31.5,31.2,31.2,30.9,30.7,30.6,
+30.8,31,31.1,31,30.9,31.2,31.2,31.3,31.6,32.1,32.3,30.3,29.8,27.1,26.7,28.2,29,29.6,27.7,29.3,30.1,29.5,29.2,
+28.7,29.2,29.1,28.7,28.8,27.6,29.4,30.1,29.9,29.5,29.2,29.8,30.1,29.8,30.7,29.6,29.2,28.6,28.8,28.6,27.1,26.6,
+27.3,29.2,28,28.8,28.8,29.5,29.3,26.5,27.2,26.7,26.3,26.2,26.9,28.2,29.2,29.4,29.6,29.6,28.8,27.9,28.6,27.7,29.3,
+27.6,28.9,28.4,27.9,26.8,27.3,28.1,26.9,26.4,26.5,27.8,28.3,29.1,28.6,28.3,27.3,27.9,26.7,27.6,28,27.3,27.4,27.9,
+27.4,26.6,27.5,28.2,28.3,28.4,28.4,28.5,26.4,26.1,26.3,27.3,27.5,28.6,29.1,29.8,30.2,30.4,28.7,29.8,30.2,29.7,28.9,28.2,
+28.3,27.6,27.7,27.8,27.3,27.1,27.4,29,28.2,26.7,26,27.4,28.1,29,28.8,28.6,28.9,29,29.2,29.4,28.9,27.3,28.7,29.2,30.2,
+30.1,31.3,30.2,29,29.4,29.6,28.5,27.5,29.3,29.2,28.8,28.9,29.6,29.6,29,29.3,29.5,29.6,29.8,30.2,29.8,
+29.6,29.9,29.3,29.2,29.9,30.1,30.1,29.8,29.4,29.1,30,29.3,28.3,27.9
+];
+
+var dailycasesTemp = [];
+var start = 0;
+
+async function fetchData(){
+    await fetch("https://api.covid19india.org/data.json")
+    .then(res=> res.json())
+    .then(data => {
+    data.statewise.forEach(function(state){
+      if(state.state != "Total"){
+        stateData.push(state);
+      }
+    });
+    data.cases_time_series.forEach(function(EvrydayCase){
+        dailyData.push(EvrydayCase);
+    });
+    dailyData.forEach(function(state){
+        if(state.date == "01 May "){
+            start = 1
+        }
+        if(start){
+            dailycasesTemp.push(state.dailyconfirmed)
+        }
+    })
+    })
+}
+
+function graphPlot(){
+var trace3 = {
+  x : dailycasesTemp,
+  y : tempDataMumbai,
+  mode: 'markers',
+   marker: {
+    size: 10,
+    color:'rgb(212, 50, 91)',
+		opacity: 0.6
+  }
+};
+
+
+var data3 = [trace3];
+var layout = {
+
+  xaxis: {
+    type: "linear",
+    range: [
+      0,
+      6000000],
+    autorange: true
+  },
+  yaxis: {
+    type: "linear",
+    range: [4,6189271],
+    autorange: true
+  },
+  height: 608,
+  width: 1520,
+  autosize: true,
+  showlegend: false,
+  paper_bgcolor: 'rgb(254, 247, 234)',
+  plot_bgcolor: 'rgb(254, 247, 234)'
+};
+
+Plotly.newPlot('covid2', data3,layout);
+
+}
+
+async function calling(){
+    await fetchData()
+
+    z4 = [tempDataMumbai,dailycasesTemp]
+    const pearCorr4 = pearsonCorrelation(z4,0,1);
+     if(!isNaN(pearCorr4))
+    {
+        document.getElementById("answer4").innerHTML="                       The test yield a value :"+ pearCorr4;
+    }
+    console.log(pearCorr4);
+    graphPlot()
+
+}
+
+calling()
+
+</script></div>
+<footer><p style="text-align:center;background-color:black;color:white;">© Covid Care</p></footer>
+
+
+</body>
+</html>
